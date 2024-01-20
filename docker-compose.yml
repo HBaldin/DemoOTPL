@@ -1,0 +1,102 @@
+version: '3.4'
+
+services:
+  bffcadastro:
+    image: ${DOCKER_REGISTRY-}bffcadastro
+    container_name: BffCadastro
+    build:
+      context: .
+      dockerfile: BffCadastro/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "8080:8080"
+    depends_on:
+      - expcadastro
+
+  expcadastro:
+    image: ${DOCKER_REGISTRY-}expcadastro
+    container_name: ExpCadastro
+    build:
+      context: .
+      dockerfile: ExpCadastro/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "8081:8080"
+    depends_on: 
+      - otel-collector
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib
+    container_name: collector
+    command: [ "--config=/etc/collector.yaml" ]
+    ports:
+      - "8889:8889"   # Prometheus metrics exporter (scrape endpoint)
+      - "8888:8888"   
+      - "4317:4317"  # otlp grpc
+      - "4318:4318"  # otlp http
+      - "55679:55679" # ZPages extension
+    environment:
+      LOKI_ENDPOINT: "http://loki:3100/loki/api/v1/push"
+      TEMPO_ENDPOINT: "tempo:4317"
+    volumes:
+      - ./otel-collector.yaml:/etc/collector.yaml
+      - ./otel-logs:/log/otel
+    depends_on:
+      - loki
+      - tempo
+      # - jaeger
+      - prometheus
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    volumes:
+      - ./grafana-datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+      - GF_FEATURE_TOGGLES_ENABLE=traceqlEditor traceQLStreaming metricsSummary
+    ports:
+      - "3000:3000"
+
+  loki:
+    image: grafana/loki:2.7.4
+    container_name: loki
+    ports:
+      - "3100:3100"
+
+  tempo:
+    image: grafana/tempo:latest
+    container_name: tempo
+    command: [ "-config.file=/etc/tempo.yml" ]
+    volumes:
+      - ./tempo.yaml:/etc/tempo.yml
+    ports:
+      - "3200:3200"   # tempo
+      - "4317"  # otlp grpc
+
+  # jaeger:
+  #   image: jaegertracing/all-in-one:latest
+  #   container_name: jaeger
+  #   ports:
+  #     - "4317:4317"
+  #     - "4318:4318"
+  #     - "16686:16686"
+  #   environment:
+  #     - COLLECTOR_OTLP_ENABLED=true
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    command:
+      - --config.file=/etc/prometheus.yaml
+      - --web.enable-remote-write-receiver
+      - --enable-feature=exemplar-storage
+    volumes:
+      - ./prometheus.yaml:/etc/prometheus.yaml
+    ports:
+      - "9090:9090"
+
