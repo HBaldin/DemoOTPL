@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BffCadastro", "BffCadastro\BffCadastro.csproj", "{8EE20E84-A783-4835-A528-11AC7296E20B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BffCadastro", "BffCadastro\BffCadastro.csproj", "{8EE20E84-A783-4835-A528-11AC7296E20B}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{25D79A2D-FC73-419C-AD89-93A2BDEEF403}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpCadastro", "ExpCadastro\ExpCadastro.csproj", "{B76C46F3-D513-45E5-890A-C2D4E881F89B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpCadastro", "ExpCadastro\ExpCadastro.csproj", "{B76C46F3-D513-45E5-890A-C2D4E881F89B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{FE13B874-D82D-45F8-9344-321D8913897E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{ED60D275-E469-4D04-8E2A-2AA23E2F6151}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +31,10 @@ Global
 		{B76C46F3-D513-45E5-890A-C2D4E881F89B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B76C46F3-D513-45E5-890A-C2D4E881F89B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B76C46F3-D513-45E5-890A-C2D4E881F89B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED60D275-E469-4D04-8E2A-2AA23E2F6151}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED60D275-E469-4D04-8E2A-2AA23E2F6151}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED60D275-E469-4D04-8E2A-2AA23E2F6151}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED60D275-E469-4D04-8E2A-2AA23E2F6151}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -36,6 +42,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{8EE20E84-A783-4835-A528-11AC7296E20B} = {FE13B874-D82D-45F8-9344-321D8913897E}
 		{B76C46F3-D513-45E5-890A-C2D4E881F89B} = {FE13B874-D82D-45F8-9344-321D8913897E}
+		{ED60D275-E469-4D04-8E2A-2AA23E2F6151} = {FE13B874-D82D-45F8-9344-321D8913897E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F91B10EC-6C10-4D25-80DC-E9947300B387}

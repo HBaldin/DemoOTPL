@@ -1,7 +1,5 @@
 using BffCadastro.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
-using System.Text.Json;
 
 namespace BffCadastro.Controllers
 {
@@ -10,14 +8,24 @@ namespace BffCadastro.Controllers
     public class PessoaController : ControllerBase
     {
         private readonly ILogger<PessoaController> logger;
-        private readonly Instrumentation instrumentation;
 
-        public PessoaController(
-            ILogger<PessoaController> logger,
-            Instrumentation instrumentation)
+        public PessoaController(ILogger<PessoaController> logger)
         {
             this.logger = logger;
-            this.instrumentation = instrumentation;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetPessoas()
+        {
+            HttpClient httpClient = new HttpClient
+            {
+                BaseAddress = new Uri("http://host.docker.internal:8081")
+            };
+
+            HttpResponseMessage response = await httpClient
+                .GetAsync("Pessoas");
+
+            return Ok(await response.Content.ReadAsStringAsync());
         }
 
         [HttpPost]
@@ -29,7 +37,14 @@ namespace BffCadastro.Controllers
                 BaseAddress = new Uri("http://host.docker.internal:8081")
             };
 
-            var response = await httpClient.PostAsJsonAsync("Pessoa", model);
+            HttpResponseMessage response = await httpClient
+                .PostAsJsonAsync("Pessoas", model);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                logger.LogError("Erro ao cadastrar nova pessoa na camada de experiência");
+                throw new Exception(await response.Content.ReadAsStringAsync());
+            }
 
             return Created();
         }

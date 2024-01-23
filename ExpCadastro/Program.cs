@@ -1,4 +1,5 @@
 using ExpCadastro;
+using ExpCadastro.Services;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
@@ -7,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddSingleton<Instrumentation>();
+builder.Services.AddSingleton<ProdutosService>();
+builder.Services.AddSingleton<PessoasService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

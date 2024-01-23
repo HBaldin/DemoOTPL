@@ -1,6 +1,6 @@
 ﻿namespace ExpCadastro.Models
 {
-    public record CreatePessoaModel
+    public record PessoaModel
     {
         public required string Id { get; set; }
         public required string Nome { get; set; }
